@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FARVAR DIGITAL</title>
+<style>
+  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0a001a; color: white; scroll-behavior: smooth; padding-bottom: 100px; }
+  header { padding: 60px 20px; text-align: center; }
+
+  @keyframes rgbGlow {
+    0% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+    33% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+    66% { border-color: #0000ff; box-shadow: 0 0 15px #0000ff; }
+    100% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+  }
+
+  .logo-circle {
+    width: 100px; height: 100px; border-radius: 50%; border: 4px solid;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; animation: rgbGlow 3s linear infinite;
+    background: rgba(0,0,0,0.5); overflow: hidden;
+  }
+  .logo-text { font-size: 2.5em; font-weight: bold; color: #00d4ff; text-shadow: 0 0 10px #00d4ff; }
+
+  h1 { font-size: 2.8em; margin: 10px 0; letter-spacing: 2px; }
+
+  .services { display: flex; flex-wrap: wrap; justify-content: center; padding: 40px 10px; }
+  .service-card { 
+    background: rgba(0, 0, 0, 0.6); border-radius: 15px; margin: 15px; 
+    padding: 25px; width: 200px; text-align: center; transition: 0.4s; 
+    cursor: pointer; border: 3px solid; animation: rgbGlow 3s linear infinite;
+    backdrop-filter: blur(5px);
+  }
+  .service-card:hover { transform: translateY(-15px) scale(1.05); }
+
+  .floating-vcard {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 120px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+    z-index: 1000;
+    animation: cardFloat 3s ease-in-out infinite;
+    cursor: pointer;
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+  }
+
+  .contact { padding: 60px 20px; text-align: center; background: rgba(255,255,255,0.05); border-radius: 20px; margin: 20px; }
+  .contact a { color: white; text-decoration: none; display: block; margin: 15px 0; font-size: 1.2em; font-weight: bold; }
+
+  /* Floating Social Icons */
+  .social-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+  }
+  .social-float img {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  .social-float img:hover {
+    transform: scale(1.2);
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-circle">
+      <div class="logo-text">FD</div>
+    </div>
+    <h1>FARVAR DIGITAL</h1>
+    <h2>Complete Digital Service Center</h2>
+  </header>
+
+  <div class="services">
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">📱 Mobile & DTH Recharge</div>
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">✨ Mobile Lamination</div>
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">👕 T-Shirt Design</div>
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">💻 Software Repair</div>
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">🪟 Windows & Linux</div>
+    <div class="service-card" onclick="window.open('https://wa.me/918921693889')">💳 ID card lamination</div>
+ <div class="service-card" onclick="window.open('https://wa.me/918921693889')">💳📇 business card design</div> 
+<div class="service-card" onclick="window.open('https://wa.me/918921693889')">🌐💻Web Design & Development</div>
+<div class="service-card" onclick="window.open('https://wa.me/918921693889')">💳 PAN CARD SERVICE</div>
+<div class="service-card" onclick="window.open('https://wa.me/918921693889')">LPG gas booking</div>
+<div class="service-card" onclick="window.open('https://wa.me/918921693889')">⚡ electricity </div>
+</div>
+
+  <img src="card.jpg" alt="Farvar Card" class="floating-vcard" onclick="window.scrollTo(0, document.body.scrollHeight)">
+
+  <div class="contact">
+    <h3>Get In Touch</h3>
+    <a href="https://wa.me/918921693889" target="_blank">💬 Customer Care: 8921693889</a>
+    <a href="tel:7510611904">🛡️ Admin: 7510611904</a>
+    <a href="mailto:farvardigital@gmail.com">📧 farvardigital@gmail.com</a>
+  </div>
+
+  <!-- Social Floating Icons -->
+  <div class="social-float">
+    <a href="https://wa.me/918921693889" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    </a>
+    <a href="https://www.instagram.com/farvardigital?igsh=MThramZmZnI4ZnN0cQ==" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
+    </a>
+    <a href="https://youtube.com/@farvardigital?si=vHQJNGqpTQOsSskZ" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+    </a>
+  </div>
+
+</body>
+</html>
