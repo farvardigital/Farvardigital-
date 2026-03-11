@@ -47,7 +47,22 @@
     <div class="card" onclick="speedTest()"><i>🚀</i>നെറ്റ് സ്പീഡ്</div>
     <div class="card" onclick="cleanSystem()"><i>🧹</i>സിസ്റ്റം ക്ലീനർ</div>
     </div>
-
+<div class="scanner-box" style="border-color: #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);">
+    <h3 style="color: #ffcc00;">👶 ഇസ്ലാമിക ബേബി നെയിം ഫൈൻഡർ</h3>
+    <p style="font-size: 11px; color: #ccc;">മാതാപിതാക്കളുടെ പേരിന്റെ ആദ്യക്ഷരം നൽകുക</p>
+    
+    <input type="text" id="fatherName" placeholder="ഉപ്പയുടെ പേര് (English)">
+    <input type="text" id="motherName" placeholder="ഉമ്മയുടെ പേര് (English)">
+    
+    <select id="genderType" style="width: 90%; padding: 10px; margin-bottom: 10px; background: #001529; color: #ffcc00; border: 1px solid #ffcc00; border-radius: 8px;">
+        <option value="B">ആൺകുട്ടി</option>
+        <option value="G">പെൺകുട്ടി</option>
+    </select>
+    
+    <div class="card" onclick="findIslamicMix()" style="width: 60%; margin: auto; border-color: #ffcc00;">പേര് കണ്ടെത്തൂ</div>
+    
+    <div id="nameRes" style="margin-top: 15px; color: #fff; font-weight: bold;"></div>
+</div>
     <div class="scanner-box">
         <h3>🔍 വൈറസ് & ലിങ്ക് സ്കാനർ</h3>
         <input type="text" id="linkIn" placeholder="ലിങ്ക് ഇവിടെ പേസ്റ്റ് ചെയ്യുക...">
@@ -242,7 +257,37 @@ function cleanSystem() {
         speak("സിസ്റ്റം ക്ലീനിംഗ് പൂർത്തിയായി. നിങ്ങളുടെ ഫോൺ ഇപ്പോൾ സേഫ് ആണ്.");
         alert("🧹 System Optimized: ജങ്ക് ഫയലുകൾ നീക്കം ചെയ്തു!");
     }, 5000);
-        }      
+        }  
+  const islamicNames = {
+    'A': { 
+        B: ["Aydan (ബുദ്ധിയുള്ളവൻ)", "Arhaan (നേതാവ്)", "Adil (നീതിയുള്ളവൻ)", "Ayaan (ദൈവത്തിന്റെ സമ്മാനം)", "Ayman (അനുഗൃഹീതൻ)", "Azlan (സിംഹം)", "Adyan (മതവിശ്വാസി)", "Arshad (വഴി കാട്ടപ്പെട്ടവൻ)", "Anas (സന്തോഷം)", "Arif (അറിവുള്ളവൻ)"], 
+        G: ["Ayra (ബഹുമാനിക്കപ്പെടുന്നവൾ)", "Aiza (ഉയർന്നവൾ)", "Amra (ദീർഘായുസ്സുള്ളവൾ)", "Anabia (സ്വർഗ്ഗവാതിൽ)", "Aysha (ജീവനുള്ളവൾ)", "Asmi (അഭിമാനം)", "Afia (ആരോഗ്യമുള്ളവൾ)", "Ayat (ദൈവത്തിന്റെ അടയാളം)", "Alisha (സംരക്ഷിക്കപ്പെട്ടവൾ)", "Amna (സമാധാനം)"] 
+    },
+    'F': { 
+        B: ["Faris (കുതിരപ്പടയാളി)", "Fahad (പുലി)", "Faisal (തീരുമാനമെടുക്കുന്നവൻ)", "Fawaz (വിജയി)", "Fadhil (അറിവുള്ളവൻ)", "Farhan (സന്തുഷ്ടൻ)", "Fayiz (വിജയി)", "Fidyan (ത്യാഗം)", "Fuad (ഹൃദയം)", "Faiz (ഔദാര്യം)"], 
+        G: ["Fida (സമർപ്പണം)", "Fiza (കാറ്റ്/വെളിച്ചം)", "Farha (സന്തോഷം)", "Fathima (നബി(സ)യുടെ മകൾ)", "Fahma (ബുദ്ധിയുള്ളവൾ)", "Faiha (സുഗന്ധമുള്ളവൾ)", "Fasna (സുന്ദരി)", "Farzin (ബുദ്ധിമതി)", "Fajr (പ്രഭാതം)", "Falak (ആകാശം)"] 
+    },
+    'H': { 
+        B: ["Hamdan (സ്തുതിക്കുന്നവൻ)", "Hadi (വഴികാട്ടി)", "Hayan (ജീവനുള്ളവൻ)", "Hashir (ശേഖരിക്കുന്നവൻ)", "Hafiz (സംരക്ഷകൻ)", "Hammad (സ്തുതിക്കുന്നവൻ)", "Hazeem (ധീരൻ)", "Habeeb (പ്രിയപ്പെട്ടവൻ)", "Haider (സിംഹം)", "Haris (കാവൽക്കാരൻ)"], 
+        G: ["Haya (ലജ്ജ/മാന്യത)", "Hiba (സമ്മാനം)", "Hana (സന്തോഷം)", "Hoor (സ്വർഗ്ഗത്തിലെ സുന്ദരി)", "Hamna (അനുഗൃഹീത)", "Hasna (സുന്ദരി)", "Hafsa (സിംഹക്കുട്ടി)", "Hifza (സംരക്ഷക)", "Hajara (നബി(സ)യുടെ ഭാര്യ)", "Hadiya (സമ്മാനം)"] 
+    },
+    'M': { 
+        B: ["Mishal (വെളിച്ചം)", "Mehran (ദയാലു)", "Mazin (മേഘം/മഴ)", "Musthafa (തിരഞ്ഞെടുക്കപ്പെട്ടവൻ)", "Munavir (പ്രകാശമുള്ളവൻ)", "Majeed (മഹത്വമുള്ളവൻ)", "Manaf (ഉയരം)", "Mansoor (വിജയി)", "Marwan (നേതാവ്)", "Mujeeb (ഉത്തരം നൽകുന്നവൻ)"], 
+        G: ["Minha (അനുഗ്രഹം)", "Myra (പ്രിയപ്പെട്ടവൾ)", "Mariya (മാന്യയായവൾ)", "Mehak (സുഗന്ധം)", "Mizna (മഴമേഘം)", "Maysa (അഭിമാനത്തോടെ നടക്കുന്നവൾ)", "Mehar (കാരുണ്യം)", "Manha (ദൈവത്തിന്റെ സമ്മാനം)", "Marwa (മക്കയിലെ ഒരു കുന്ന്)", "Maryam (പരിശുദ്ധയായവൾ)"] 
+    },
+    'R': { 
+        B: ["Rayyan (സ്വർഗ്ഗകവാടം)", "Rohan (ആത്മാവ്/സന്തോഷം)", "Rizwan (സംതൃപ്തി)", "Rafeeq (സുഹൃത്ത്)", "Raihan (സ്വർഗ്ഗത്തിലെ ചെടി)", "Rashid (വഴികാട്ടപ്പെട്ടവൻ)", "Rishan (സത്യസന്ധൻ)", "Razin (ശാന്തൻ)", "Rishal (പ്രകാശമുള്ളവൻ)", "Ramiz (ചിഹ്നം)"], 
+        G: ["Riza (തൃപ്തി)", "Raunaq (ശോഭ)", "Rifa (ഉയർച്ച)", "Rania (റാണിയെപ്പോലെയുള്ളവൾ)", "Rida (സമ്മതം)", "Riya (സുന്ദരി)", "Rawan (മൃദുവായ ഒഴുക്ക്)", "Rabiya (വസന്തം)", "Radhiya (സംതൃപ്തയായവൾ)", "Raisa (നേതാവ്)"] 
+    },
+    'S': { 
+        B: ["Sayan (സംരക്ഷകൻ)", "Shadhil (സന്തുഷ്ടൻ)", "Sahal (ലളിതമായവൻ)", "Sufiyan (വേഗമുള്ളവൻ)", "Saif (വാൾ)", "Sajid (നമസ്കരിക്കുന്നവൻ)", "Salman (സുരക്ഷിതൻ)", "Samir (കൂട്ടുകാരൻ)", "Shamil (വ്യാപിച്ചവൻ)", "Sinan (ശക്തിയുള്ളവൻ)"], 
+        G: ["Sara (പ്രഭാവതി)", "Safa (പരിശുദ്ധം)", "Sana (പ്രകാശം)", "Shaza (സുഗന്ധം)", "Suhana (മനോഹരം)", "Siyana (സംരക്ഷണം)", "Saadiya (ഭാഗ്യമുള്ളവൾ)", "Sabira (ക്ഷമയുള്ളവൾ)", "Sadaf (മുത്ത്)", "Sahla (ലളിതമായവൾ)"] 
+    },
+    'Z': { 
+        B: ["Zayan (അലങ്കരിച്ചവൻ)", "Zayn (സൗന്ദര്യം)", "Zeeshan (ഗംഭീരമായവൻ)", "Zia (പ്രകാശം)", "Zakir (സ്മരിക്കുന്നവൻ)", "Zidan (വളർച്ച)", "Ziyad (വർദ്ധനവ്)", "Zohan (ദൈവത്തിന്റെ സമ്മാനം)", "Zuhair (തിളക്കമുള്ളവൻ)", "Zaid (വർദ്ധനവ്)"], 
+        G: ["Zara (പൂവ്)", "Zoya (ജീവനുള്ളവൾ)", "Zenia (പുഷ്പം)", "Ziana (ധീരത)", "Zeba (സുന്ദരി)", "Zunairah (സ്വർഗ്ഗത്തിലെ പൂവ്)", "Zehra (തിളക്കമുള്ളവൾ)", "Zifa (സമ്പന്നമായത്)", "Zulfa (അടുപ്പം)", "Zayna (അലങ്കരിക്കപ്പെട്ടവൾ)"] 
+    }
+};      
 </script>
 </body>
 </html>
