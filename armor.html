@@ -67,7 +67,32 @@
         <a href="tel:101" style="color: white; text-decoration: none; background: #444; padding: 8px; border-radius: 5px;">🔥 Fire: 101</a>
     </div>
 </div>
+<div class="scanner-box" style="border-color: #ffd700; background: rgba(255, 215, 0, 0.05); margin-top: 20px;">
+    <h3 style="color: #ffd700;">💰 Gold & Currency (Live)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: #fff;">
+        <div style="padding: 10px; border: 1px solid #ffd700; border-radius: 8px;">
+            Gold 22K: <span id="gold-price" style="color: #ffd700;">Loading...</span>
+        </div>
+        <div style="padding: 10px; border: 1px solid #ffd700; border-radius: 8px;">
+            1 AED: <span id="aed-rate" style="color: #ffd700;">Loading...</span>
+        </div>
+    </div>
+</div>
 
+<div class="scanner-box" style="border-color: #00ffcc; margin-top: 20px;">
+    <h3 style="color: #00ffcc;">📝 Quick Notes</h3>
+    <textarea id="userNotes" oninput="saveNotes()" placeholder="ഇവിടെ എഴുതി വെക്കാം..." style="width: 90%; height: 80px; background: #111; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 8px;"></textarea>
+</div>
+
+<div class="scanner-box" style="border-color: #00ccff; margin-top: 20px;">
+    <h3 style="color: #00ccff;">📅 പ്രധാന ദിനങ്ങൾ</h3>
+    <p style="font-size: 12px; color: #fff;" id="islamic-events">Loading dates...</p>
+    <hr style="border: 0.5px solid #333; margin: 10px 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; color: #aaa;">Water Reminder:</span>
+        <button onclick="toggleWaterReminder()" id="waterBtn" style="background: #00ccff; border: none; padding: 5px 10px; border-radius: 5px; font-size: 10px;">OFF</button>
+    </div>
+</div>
 <div style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #222;">
     <div id="digital-clock" style="font-size: 20px; color: #00ffcc; font-family: monospace; margin-bottom: 10px;">00:00:00</div>
     <button onclick="toggleTheme()" style="background: #333; color: white; border: 1px solid #555; padding: 5px 15px; border-radius: 20px; font-size: 11px;">Change Theme 🌓</button>
@@ -428,7 +453,61 @@ window.onload = function() {
     getPrayerTimes();
     getWeather();
     updateClock();
-};       
+}; 
+  // 1. സ്വർണ്ണ വില & കറൻസി (API വഴി)
+async function getRates() {
+    try {
+        // ഇന്റർനെറ്റിൽ നിന്ന് തത്സമയം വില എടുക്കുന്നു
+        const res = await fetch('https://api.exchangerate-api.com/v4/latest/AED');
+        const data = await res.json();
+        document.getElementById('aed-rate').innerText = "₹" + data.rates.INR.toFixed(2);
+        
+        // സ്വർണ്ണ വില ഏകദേശം (ഇത് മാർക്കറ്റ് അനുസരിച്ച് മാറും)
+        document.getElementById('gold-price').innerText = "₹6,950/g"; 
+    } catch (e) { console.log("Rate error"); }
+}
+
+// 2. ഹെൽത്ത് റിമൈൻഡർ
+let waterInterval;
+function toggleWaterReminder() {
+    let btn = document.getElementById('waterBtn');
+    if (btn.innerText === "OFF") {
+        btn.innerText = "ON";
+        btn.style.background = "#ff4444";
+        speak("വാട്ടർ റിമൈൻഡർ ഓൺ ചെയ്തിരിക്കുന്നു. ഓരോ മണിക്കൂറിലും ഞാൻ ഓർമ്മിപ്പിക്കാം.");
+        waterInterval = setInterval(() => {
+            speak("ദയവായി ഒരു ഗ്ലാസ്സ് വെള്ളം കുടിക്കൂ.");
+            alert("💧 വെള്ളം കുടിക്കാനുള്ള സമയമായി!");
+        }, 3600000); // 1 Hour
+    } else {
+        btn.innerText = "OFF";
+        btn.style.background = "#00ccff";
+        clearInterval(waterInterval);
+    }
+}
+
+// 3. പേഴ്സണൽ നോട്ട്സ് (സേവ് ചെയ്യാൻ)
+function saveNotes() {
+    let note = document.getElementById('userNotes').value;
+    localStorage.setItem('vof_notes', note);
+}
+
+// 4. ഇസ്ലാമിക ദിനങ്ങൾ
+function loadEvents() {
+    const events = "റമദാൻ: മാർച്ച് 20 (ഏകദേശം) <br> ഈദ്-ഉൽ-ഫിത്തർ: ഏപ്രിൽ 20";
+    document.getElementById('islamic-events').innerHTML = events;
+}
+
+// പഴയ onload ഫങ്ക്ഷൻ ഒന്നുകൂടി അപ്ഡേറ്റ് ചെയ്യുന്നു
+window.onload = function() {
+    getPrayerTimes();
+    getWeather();
+    updateClock();
+    getRates();
+    loadEvents();
+    // പഴയ നോട്ട്സ് ഉണ്ടെങ്കിൽ കാണിക്കാൻ
+    document.getElementById('userNotes').value = localStorage.getItem('vof_notes') || "";
+};      
 </script>
 </body>
 </html>
