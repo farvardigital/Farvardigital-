@@ -1,0 +1,15 @@
+{
+  "name": "VOF ARMOR ULTRA",
+  "short_name": "VofArmor",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#00050a",
+  "theme_color": "#00ffcc",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

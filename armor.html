@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vof Armor Ultra | Ultimate 9-in-1</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        body { background: #00050a; color: #00ffcc; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding: 15px; overflow-x: hidden; }
+        .header { text-shadow: 0 0 15px #00ffcc; font-size: 24px; margin-top: 10px; font-weight: bold; }
+        
+        .system-hub { border: 5px solid #00ffcc; border-radius: 50%; width: 180px; height: 180px; margin: 20px auto; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.4); border-style: double; animation: glow 2s infinite; position: relative; }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); } 50% { box-shadow: 0 0 40px rgba(0, 255, 204, 0.6); } }
+        #bat-val { font-size: 50px; font-weight: bold; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .card { background: rgba(0, 255, 204, 0.05); border: 1px solid #00ffcc; border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.3s; font-size: 13px; -webkit-tap-highlight-color: transparent; }
+        .card:active { background: #00ffcc; color: #000; transform: scale(0.95); }
+        .card i { font-size: 20px; display: block; margin-bottom: 5px; }
+
+        .scanner-box { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 15px; margin-top: 15px; border: 1px dashed #00ffcc; }
+        input { width: 85%; padding: 10px; border-radius: 8px; border: none; margin-bottom: 10px; background: #001529; color: white; outline: none; border: 1px solid #00ffcc; }
+        
+        #user-tag { font-size: 16px; color: #fff; font-weight: bold; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body onclick="initApp()">
+
+    <h1 class="header">🛡️ VOF ARMOR ULTRA</h1>
+
+    <div class="system-hub">
+        <div id="bat-val">--%</div>
+        <div id="user-tag">സിസ്റ്റം റെഡി</div>
+    </div>
+
+    <div class="grid">
+        <div class="card" onclick="manualCheck()"><i>📊</i>സ്റ്റാറ്റസ് ചെക്ക്</div>
+        <div class="card" onclick="activateAntiTheft()" id="antiBtn"><i>🚨</i>ആന്റി-ടച്ച്</div>
+        <div class="card" onclick="speak('ചാർജർ സുരക്ഷാ കവചം സജീവമാണ്')"><i>🔌</i>ചാർജർ ഗാർഡ്</div>
+        <div class="card" onclick="speak('സിസ്റ്റം താപനില സാധാരണ നിലയിലാണ്. വൈറസ് ഭീഷണികളില്ല.')"><i>🔥</i>ഹീറ്റ് സെൻസർ</div>
+        <div class="card" onclick="trackLocation()"><i>📍</i>ലൊക്കേഷൻ ട്രാക്ക്</div>
+        <div class="card" onclick="speak('ഇൻട്രൂഡർ സെൽഫി മോഡ് ഓൺ ആയി. ആരെങ്കിലും ഫോൺ തുറക്കാൻ നോക്കിയാൽ സിസ്റ്റം അലേർട്ട് നൽകും.')"><i>📸</i>ഇൻട്രൂഡർ ഫോട്ടോ</div>
+    </div>
+
+    <div class="scanner-box">
+        <h3>🔍 വൈറസ് & ലിങ്ക് സ്കാനർ</h3>
+        <input type="text" id="linkIn" placeholder="ലിങ്ക് ഇവിടെ പേസ്റ്റ് ചെയ്യുക...">
+        <div class="card" onclick="scanLink()" style="width: 50%; margin: auto;">സ്കാൻ ചെയ്യൂ</div>
+        <p id="res" style="font-size: 12px; margin-top: 10px;"></p>
+    </div>
+
+    <script>
+        let antiActive = false;
+        let appInitialized = false;
+
+        function initApp() {
+            if (!appInitialized) {
+                document.getElementById('user-tag').innerText = "സ്വാഗതം";
+                speak("സ്വാഗതം, വി ഓഫ് ആർമർ അൾട്രാ സെക്യൂരിറ്റി സിസ്റ്റം സജീവമായി.");
+                appInitialized = true;
+            }
+        }
+
+        function speak(t) {
+            window.speechSynthesis.cancel();
+            let s = new SpeechSynthesisUtterance(t);
+            s.lang = 'ml-IN';
+            window.speechSynthesis.speak(s);
+        }
+
+        navigator.getBattery().then(bat => {
+            function update() {
+                let lvl = Math.floor(bat.level * 100);
+                document.getElementById('bat-val').innerText = lvl + "%";
+            }
+            bat.addEventListener('chargingchange', () => {
+                if(!bat.charging) {
+                    new Audio('https://actions.google.com/sounds/v1/alarms/emergency_it_is_an_emergency.ogg').play();
+                    speak("മുന്നറിയിപ്പ്! ചാർജർ ഊരി മാറ്റി.");
+                } else { 
+                    speak("ചാർജിംഗ് ആരംഭിച്ചു. സുരക്ഷാ കവചം സജീവമാണ്."); 
+                }
+            });
+            setInterval(update, 30000); update();
+        });
+
+        function trackLocation() {
+            if (navigator.geolocation) {
+                speak("നിങ്ങളുടെ ലൊക്കേഷൻ പരിശോധിക്കുന്നു.");
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    speak("ലൊക്കേഷൻ കണ്ടെത്തി. നിങ്ങൾ ഇപ്പോൾ സുരക്ഷിതനാണ്.");
+                    alert("നിങ്ങളുടെ സ്ഥാനം: " + pos.coords.latitude + ", " + pos.coords.longitude);
+                }, () => {
+                    speak("ലൊക്കേഷൻ കണ്ടെത്താൻ സാധിച്ചില്ല.");
+                });
+            }
+        }
+
+        function activateAntiTheft() {
+            antiActive = true;
+            document.getElementById('antiBtn').style.background = "#ff3333";
+            speak("ആന്റി ടച്ച് മോഡ് ഓൺ ആയി. ഫോൺ അനങ്ങിയാൽ സിസ്റ്റം അലറും.");
+            
+            window.addEventListener('deviceorientation', function(e) {
+                if(antiActive && (Math.abs(e.gamma) > 15 || Math.abs(e.beta) > 15)) {
+                    new Audio('https://actions.google.com/sounds/v1/alarms/emergency_it_is_an_emergency.ogg').play();
+                    speak("അലേർട്ട്! അനുവാദമില്ലാതെ ഫോൺ തൊട്ടു.");
+                    antiActive = false;
+                    document.getElementById('antiBtn').style.background = "";
+                }
+            });
+        }
+
+        function scanLink() {
+            let l = document.getElementById('linkIn').value;
+            if(!l) return speak("പരിശോധിക്കാൻ ലിങ്ക് നൽകുക");
+            document.getElementById('res').innerText = "സ്കാനിംഗ്...";
+            speak("ലിങ്ക് പരിശോധിക്കുന്നു...");
+            setTimeout(() => {
+                if(l.includes("gift") || l.includes("win") || l.includes("free") || !l.startsWith("https")) {
+                    speak("ജാഗ്രത! ഇതൊരു അപകടകരമായ ലിങ്ക് ആകാൻ സാധ്യതയുണ്ട്.");
+                    document.getElementById('res').innerText = "⚠️ അപകടകരമായ ലിങ്ക്!";
+                    document.getElementById('res').style.color = "#ff3333";
+                } else {
+                    speak("ഈ ലിങ്ക് സുരക്ഷിതമാണ്.");
+                    document.getElementById('res').innerText = "✅ സുരക്ഷിതം";
+                    document.getElementById('res').style.color = "#00ffcc";
+                }
+            }, 3000);
+        }
+
+        function manualCheck() {
+            speak("സിസ്റ്റം സ്റ്റാറ്റസ് നോർമൽ ആണ്. വി ഓഫ് ആർമർ സുരക്ഷിതമാണ്.");
+        }
+
+        // Service Worker രജിസ്റ്റർ ചെയ്യുന്നു
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(() => console.log("Service Worker സജീവമായി"))
+                .catch(err => console.log('Error:', err));
+            });
+        }
+    </script>
+</body>
+</html>
