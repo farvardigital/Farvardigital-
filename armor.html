@@ -132,17 +132,34 @@
         }
 
         function manualCheck() {
-            speak("സിസ്റ്റം സ്റ്റാറ്റസ് നോർമൽ ആണ്. വി ഓഫ് ആർമർ സുരക്ഷിതമാണ്.");
-        }
+    speak("സിസ്റ്റം സ്റ്റാറ്റസ് നോർമൽ ആണ്. വി ഓഫ് ആർമർ സുരക്ഷാതീതമാണ്.");
+}
 
-        // Service Worker രജിസ്റ്റർ ചെയ്യുന്നു
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker സജീവമായി"))
-                .catch(err => console.log('Error:', err));
-            });
-        }
-    </script>
+// ഇതാണ് ഓട്ടോമാറ്റിക് വർക്ക് ആവാൻ ചേർക്കേണ്ടത്
+if ('getBattery' in navigator) {
+    navigator.getBattery().then(function(battery) {
+        battery.addEventListener('chargingchange', function() {
+            if (battery.charging) {
+                speak("ചാർജർ കണക്ട് ചെയ്തു");
+            } else {
+                speak("ചാർജർ ഡിസ്‌കണക്ട് ചെയ്തു. ശ്രദ്ധിക്കുക!");
+            }
+        });
+    });
+}
+
+window.addEventListener('click', function() {
+    speak("സുരക്ഷാ സംവിധാനം സജ്ജമായി");
+}, { once: true });
+
+// Service Worker രജിസ്റ്റർ ചെയ്യുന്നു
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Service Worker റെഡി"))
+        .catch(err => console.log('Error:', err));
+    });
+}
+</script>
 </body>
 </html>
