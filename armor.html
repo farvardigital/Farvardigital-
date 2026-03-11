@@ -151,7 +151,23 @@ if ('getBattery' in navigator) {
 window.addEventListener('click', function() {
     speak("സുരക്ഷാ സംവിധാനം സജ്ജമായി");
 }, { once: true });
+// ആപ്പ് ബാക്ക്ഗ്രൗണ്ടിൽ ആയാലും പ്രവർത്തിക്കാൻ (Wake Lock)
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      console.log('സുരക്ഷാ സംവിധാനം സജീവമാണ്');
+    }
+  } catch (err) {
+    console.log('Wake Lock Error:', err.message);
+  }
+}
 
+// സ്ക്രീനിൽ തൊടുമ്പോൾ ഇത് ആക്റ്റീവ് ആകും
+window.addEventListener('click', () => {
+  requestWakeLock();
+});
 // Service Worker രജിസ്റ്റർ ചെയ്യുന്നു
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
