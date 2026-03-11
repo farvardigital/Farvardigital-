@@ -287,7 +287,36 @@ function cleanSystem() {
         B: ["Zayan (അലങ്കരിച്ചവൻ)", "Zayn (സൗന്ദര്യം)", "Zeeshan (ഗംഭീരമായവൻ)", "Zia (പ്രകാശം)", "Zakir (സ്മരിക്കുന്നവൻ)", "Zidan (വളർച്ച)", "Ziyad (വർദ്ധനവ്)", "Zohan (ദൈവത്തിന്റെ സമ്മാനം)", "Zuhair (തിളക്കമുള്ളവൻ)", "Zaid (വർദ്ധനവ്)"], 
         G: ["Zara (പൂവ്)", "Zoya (ജീവനുള്ളവൾ)", "Zenia (പുഷ്പം)", "Ziana (ധീരത)", "Zeba (സുന്ദരി)", "Zunairah (സ്വർഗ്ഗത്തിലെ പൂവ്)", "Zehra (തിളക്കമുള്ളവൾ)", "Zifa (സമ്പന്നമായത്)", "Zulfa (അടുപ്പം)", "Zayna (അലങ്കരിക്കപ്പെട്ടവൾ)"] 
     }
-};      
+};
+function findIslamicMix() {
+    let fValue = document.getElementById('fatherName').value.trim();
+    let mValue = document.getElementById('motherName').value.trim();
+    let gender = document.getElementById('genderType').value;
+
+    if (fValue === "" || mValue === "") {
+        speak("ദയവായി ഉപ്പയുടെയും ഉമ്മയുടെയും പേര് നൽകുക");
+        return;
+    }
+
+    let char1 = fValue.charAt(0).toUpperCase();
+    let char2 = mValue.charAt(0).toUpperCase();
+
+    // നീ ഉണ്ടാക്കിയ ലിസ്റ്റിൽ നിന്ന് പേരുകൾ എടുക്കുന്നു
+    let names1 = (islamicNames[char1] && islamicNames[char1][gender]) ? islamicNames[char1][gender] : [];
+    let names2 = (islamicNames[char2] && islamicNames[char2][gender]) ? islamicNames[char2][gender] : [];
+    
+    let allNames = [...new Set([...names1, ...names2])];
+
+    let displayDiv = document.getElementById('nameRes');
+    
+    if (allNames.length > 0) {
+        displayDiv.innerHTML = "<div style='background:rgba(0,255,204,0.1); padding:15px; border-radius:10px; color:#fff; border:1px solid #00ffcc; text-align:left;'>✨ " + allNames.join("<br>✨ ") + "</div>";
+        speak("നിങ്ങൾക്കായി പേരുകൾ കണ്ടെത്തിയിരിക്കുന്നു");
+    } else {
+        displayDiv.innerHTML = "<p style='color:orange;'>ഈ അക്ഷരങ്ങളിൽ നിലവിൽ പേരുകൾ ലഭ്യമല്ല.</p>";
+        speak("ക്ഷമിക്കണം, പേരുകൾ ലഭ്യമല്ല.");
+    }
+        }        
 </script>
 </body>
 </html>
