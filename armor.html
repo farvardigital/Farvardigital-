@@ -69,7 +69,20 @@
         <div class="card" onclick="scanLink()" style="width: 50%; margin: auto;">സ്കാൻ ചെയ്യൂ</div>
         <p id="res" style="font-size: 12px; margin-top: 10px;"></p>
     </div>
-
+<div class="scanner-box" style="border-color: #00ffcc; background: rgba(0, 255, 204, 0.05); margin-top: 20px;">
+    <h3 style="color: #00ffcc;">🕌 നിസ്കാര സമയം (മലപ്പുറം)</h3>
+    <p style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Malappuram, Kerala</p>
+    
+    <div id="prayer-times" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #fff; font-size: 14px;">
+        <div style="padding: 10px; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; background: rgba(0,0,0,0.2);">Subah: <span id="fajr" style="color: #00ffcc;">--:--</span></div>
+        <div style="padding: 10px; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; background: rgba(0,0,0,0.2);">Luhar: <span id="dhuhr" style="color: #00ffcc;">--:--</span></div>
+        <div style="padding: 10px; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; background: rgba(0,0,0,0.2);">Asar: <span id="asr" style="color: #00ffcc;">--:--</span></div>
+        <div style="padding: 10px; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; background: rgba(0,0,0,0.2);">Maghrib: <span id="maghrib" style="color: #00ffcc;">--:--</span></div>
+        <div style="padding: 10px; border: 1px solid rgba(0,255,204,0.3); border-radius: 8px; background: rgba(0,0,0,0.2);">Isha: <span id="isha" style="color: #00ffcc;">--:--</span></div>
+    </div>
+    
+    <div class="card" onclick="getPrayerTimes()" style="width: 50%; margin: 15px auto 5px auto; font-size: 12px; height: 35px; line-height: 35px;">Refresh Time</div>
+</div>
     <script>
         let antiActive = false;
         let appInitialized = false;
@@ -316,7 +329,28 @@ function findIslamicMix() {
         displayDiv.innerHTML = "<p style='color:orange;'>ഈ അക്ഷരങ്ങളിൽ നിലവിൽ പേരുകൾ ലഭ്യമല്ല.</p>";
         speak("ക്ഷമിക്കണം, പേരുകൾ ലഭ്യമല്ല.");
     }
-        }        
+        }  
+  async function getPrayerTimes() {
+    try {
+        // മലപ്പുറത്തെ സമയം എടുക്കുന്നു
+        const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Malappuram&country=India&method=2');
+        const data = await response.json();
+        const timings = data.data.timings;
+
+        document.getElementById('fajr').innerText = timings.Fajr;
+        document.getElementById('dhuhr').innerText = timings.Dhuhr;
+        document.getElementById('asr').innerText = timings.Asr;
+        document.getElementById('maghrib').innerText = timings.Maghrib;
+        document.getElementById('isha').innerText = timings.Isha;
+
+        console.log("Prayer times updated for Malappuram");
+    } catch (error) {
+        console.log("Error: " + error);
+    }
+}
+
+// പേജ് ലോഡ് ആകുമ്പോൾ തന്നെ സമയം കാണിക്കാൻ ഇത് താഴെ ചേർക്കുക
+getPrayerTimes();      
 </script>
 </body>
 </html>
