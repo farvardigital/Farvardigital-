@@ -176,6 +176,15 @@ if ('serviceWorker' in navigator) {
         .catch(err => console.log('Error:', err));
     });
 }
+ // ബാക്ക് ബട്ടൺ അടിച്ചാൽ ആപ്പ് കട്ട് ആവാതിരിക്കാൻ ഉറപ്പുള്ള വഴി
+(function () {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+        // ബാക്ക് അടിച്ചാൽ വീണ്ടും അതേ പേജ് തന്നെ ലോഡ് ചെയ്യിക്കുന്നു
+        window.history.pushState(null, null, window.location.href);
+        alert("സുരക്ഷാ കാരണങ്ങളാൽ ബാക്ക് ബട്ടൺ ബ്ലോക്ക് ചെയ്തിരിക്കുകയാണ്. ഹോം ബട്ടൺ ഉപയോഗിക്കുക.");
+    };
+})();       
 </script>
 </body>
 </html>
