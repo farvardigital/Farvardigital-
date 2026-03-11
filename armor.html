@@ -39,9 +39,39 @@
         <div class="card" onclick="manualCheck()"><i>📊</i>സ്റ്റാറ്റസ് ചെക്ക്</div>
         <div class="card" onclick="activateAntiTheft()" id="antiBtn"><i>🚨</i>ആന്റി-ടച്ച്</div>
         <div class="card" onclick="speak('ചാർജർ സുരക്ഷാ കവചം സജീവമാണ്')"><i>🔌</i>ചാർജർ ഗാർഡ്</div>
-        <div class="card" onclick="speak('സിസ്റ്റം താപനില സാധാരണ നിലയിലാണ്. വൈറസ് ഭീഷണികളില്ല.')"><i>🔥</i>ഹീറ്റ് സെൻസർ</div>
-        <div class="card" onclick="trackLocation()"><i>📍</i>ലൊക്കേഷൻ ട്രാക്ക്</div>
-        
+        <div class="card" onclick="speak('സിസ്റ്റം താപനില സാധാരണ നിലയിലാണ്. വൈറസ് ഭീഷണികളില്ല.')"><i>🔥</i>ഹീറ്റ് സെൻസർ</div
+        <div class="scanner-box" style="border-color: #ff4444; background: rgba(255, 68, 68, 0.05); margin-top: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h3 style="color: #ff4444; margin: 0;">📿 തസ്ബീഹ്</h3>
+            <h2 id="tasbeeh-count" style="font-size: 30px; margin: 10px 0;">0</h2>
+            <button onclick="countTasbeeh()" style="background: #ff4444; color: white; border: none; padding: 10px 20px; border-radius: 5px;">Count</button>
+            <button onclick="resetTasbeeh()" style="background: transparent; color: #ff4444; border: 1px solid #ff4444; padding: 5px 10px; border-radius: 5px; font-size: 10px;">Reset</button>
+        </div>
+        <div style="text-align: right; border-left: 1px solid #444; padding-left: 15px;">
+            <h3 style="color: #00ccff; margin: 0;">☁️ Weather</h3>
+            <p id="temp" style="font-size: 20px; margin: 5px 0; color: #fff;">--°C</p>
+            <p id="weather-desc" style="font-size: 10px; color: #aaa;">Malappuram</p>
+        </div>
+    </div>
+</div>
+
+<div id="daily-quote" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-top: 20px; font-style: italic; color: #ddd; font-size: 13px; text-align: center;">
+    "ക്ഷമയാണ് വിജയത്തിന്റെ താക്കോൽ."
+</div>
+
+<div class="scanner-box" style="border-color: #ffcc00; margin-top: 20px;">
+    <h3 style="color: #ffcc00;">☎️ Emergency Malappuram</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+        <a href="tel:108" style="color: white; text-decoration: none; background: #444; padding: 8px; border-radius: 5px;">🚑 Ambulance: 108</a>
+        <a href="tel:101" style="color: white; text-decoration: none; background: #444; padding: 8px; border-radius: 5px;">🔥 Fire: 101</a>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #222;">
+    <div id="digital-clock" style="font-size: 20px; color: #00ffcc; font-family: monospace; margin-bottom: 10px;">00:00:00</div>
+    <button onclick="toggleTheme()" style="background: #333; color: white; border: 1px solid #555; padding: 5px 15px; border-radius: 20px; font-size: 11px;">Change Theme 🌓</button>
+        </div>
     <div class="grid">
     <div class="card" onclick="checkPassword()"><i>🔑</i>പാസ്‌വേഡ് സുരക്ഷ</div>
     <div class="card" onclick="speedTest()"><i>🚀</i>നെറ്റ് സ്പീഡ്</div>
@@ -350,7 +380,55 @@ function findIslamicMix() {
 }
 
 // പേജ് ലോഡ് ആകുമ്പോൾ തന്നെ സമയം കാണിക്കാൻ ഇത് താഴെ ചേർക്കുക
-getPrayerTimes();      
+getPrayerTimes(); 
+ // 1. തസ്ബീഹ് കൗണ്ടർ
+let tCount = 0;
+function countTasbeeh() {
+    tCount++;
+    document.getElementById('tasbeeh-count').innerText = tCount;
+    if(tCount % 33 === 0) speak(tCount + " പൂർത്തിയായി");
+}
+function resetTasbeeh() {
+    tCount = 0;
+    document.getElementById('tasbeeh-count').innerText = tCount;
+}
+
+// 2. കാലാവസ്ഥ (Malappuram)
+async function getWeather() {
+    try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=11.05&longitude=76.07&current_weather=true');
+        const data = await res.json();
+        document.getElementById('temp').innerText = data.current_weather.temperature + "°C";
+    } catch (e) { console.log("Weather error"); }
+}
+
+// 4. ഡെയ്‌ലി ക്വോട്ട്
+const quotes = [
+    "നന്മ ചെയ്യുക, അത് നിങ്ങളിലേക്ക് തന്നെ മടങ്ങിവരും.",
+    "പുഞ്ചിരി ഒരു സ്വദഖയാണ്.",
+    "അറിവ് തേടൽ ഓരോ മുസ്ലിമിനും നിർബന്ധമാണ്.",
+    "സത്യസന്ധത വിജയത്തിലേക്ക് നയിക്കുന്നു."
+];
+document.getElementById('daily-quote').innerText = "✨ " + quotes[Math.floor(Math.random() * quotes.length)];
+
+// 6. ഡിജിറ്റൽ ക്ലോക്ക്
+function updateClock() {
+    let now = new Date();
+    document.getElementById('digital-clock').innerText = now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+
+// 3. തീം മാറ്റാൻ
+function toggleTheme() {
+    document.body.style.filter = document.body.style.filter === 'invert(1)' ? 'invert(0)' : 'invert(1)';
+}
+
+// ലോഡ് ചെയ്യുമ്പോൾ എല്ലാം വർക്ക് ആക്കാൻ
+window.onload = function() {
+    getPrayerTimes();
+    getWeather();
+    updateClock();
+};       
 </script>
 </body>
 </html>
