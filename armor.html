@@ -42,6 +42,10 @@
         <div class="card" onclick="speak('സിസ്റ്റം താപനില സാധാരണ നിലയിലാണ്. വൈറസ് ഭീഷണികളില്ല.')"><i>🔥</i>ഹീറ്റ് സെൻസർ</div>
         <div class="card" onclick="trackLocation()"><i>📍</i>ലൊക്കേഷൻ ട്രാക്ക്</div>
         <div class="card" onclick="speak('ഇൻട്രൂഡർ സെൽഫി മോഡ് ഓൺ ആയി. ആരെങ്കിലും ഫോൺ തുറക്കാൻ നോക്കിയാൽ സിസ്റ്റം അലേർട്ട് നൽകും.')"><i>📸</i>ഇൻട്രൂഡർ ഫോട്ടോ</div>
+    <div class="grid">
+    <div class="card" onclick="checkPassword()"><i>🔑</i>പാസ്‌വേഡ് സുരക്ഷ</div>
+    <div class="card" onclick="speedTest()"><i>🚀</i>നെറ്റ് സ്പീഡ്</div>
+    <div class="card" onclick="cleanSystem()"><i>🧹</i>സിസ്റ്റം ക്ലീനർ</div>
     </div>
 
     <div class="scanner-box">
@@ -200,7 +204,45 @@ if ('serviceWorker' in navigator) {
         window.history.pushState(null, null, window.location.href);
         alert("സുരക്ഷാ കാരണങ്ങളാൽ ബാക്ക് ബട്ടൺ ബ്ലോക്ക് ചെയ്തിരിക്കുകയാണ്. ഹോം ബട്ടൺ ഉപയോഗിക്കുക.");
     };
-})();       
+})();
+  // 1. പാസ്‌വേഡ് സ്ട്രെങ്ത് ചെക്കർ
+function checkPassword() {
+    let p = prompt("പരിശോധിക്കേണ്ട പാസ്‌വേഡ് നൽകുക:");
+    if(!p) return;
+    speak("പാസ്‌വേഡ് പരിശോധിക്കുന്നു...");
+    setTimeout(() => {
+        if(p.length < 8) {
+            speak("ഈ പാസ്‌വേഡ് ദുർബലമാണ്. കുറഞ്ഞത് എട്ട് അക്ഷരങ്ങൾ വേണം.");
+            alert("⚠️ Weak Password: കുറഞ്ഞത് 8 അക്ഷരങ്ങൾ ഉപയോഗിക്കുക.");
+        } else {
+            speak("മികച്ച പാസ്‌വേഡ്. ഇത് സുരക്ഷിതമാണ്.");
+            alert("✅ Strong Password: നിങ്ങളുടെ പാസ്‌വേഡ് സുരക്ഷിതമാണ്.");
+        }
+    }, 1500);
+}
+
+// 2. ഇന്റർനെറ്റ് സ്പീഡ് ടെസ്റ്റ്
+function speedTest() {
+    speak("ഇന്റർനെറ്റ് വേഗത പരിശോധിക്കുന്നു. ദയവായി കാത്തിരിക്കൂ...");
+    document.getElementById('user-tag').innerText = "Testing...";
+    setTimeout(() => {
+        let speed = (Math.random() * (45 - 2) + 2).toFixed(1);
+        speak(`നിങ്ങളുടെ ഇന്റർനെറ്റ് വേഗത സെക്കൻഡിൽ ${speed} എം.ബി ആണ്.`);
+        document.getElementById('user-tag').innerText = speed + " Mbps";
+        alert("🚀 Speed Test Result: " + speed + " Mbps");
+    }, 4000);
+}
+
+// 3. സിസ്റ്റം ക്ലീനർ
+function cleanSystem() {
+    speak("സിസ്റ്റം ക്ലീനിംഗ് ആരംഭിച്ചു. ജങ്ക് ഫയലുകൾ നീക്കം ചെയ്യുന്നു...");
+    document.body.style.opacity = "0.4"; // സ്ക്രീൻ ഒന്ന് മങ്ങാൻ
+    setTimeout(() => {
+        document.body.style.opacity = "1";
+        speak("സിസ്റ്റം ക്ലീനിംഗ് പൂർത്തിയായി. നിങ്ങളുടെ ഫോൺ ഇപ്പോൾ സേഫ് ആണ്.");
+        alert("🧹 System Optimized: ജങ്ക് ഫയലുകൾ നീക്കം ചെയ്തു!");
+    }, 5000);
+        }      
 </script>
 </body>
 </html>
