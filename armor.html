@@ -55,14 +55,17 @@
         let antiActive = false;
         let appInitialized = false;
 
-        function initApp() {
-            if (!appInitialized) {
-                document.getElementById('user-tag').innerText = "സ്വാഗതം";
-                speak("സ്വാഗതം, വി ഓഫ് ആർമർ അൾട്രാ സെക്യൂരിറ്റി സിസ്റ്റം സജീവമായി.");
-                appInitialized = true;
-            }
+        async function initApp() {
+    if (!appInitialized) {
+        document.getElementById('user-tag').innerText = "സ്വാഗതം";
+        speak("സ്വാഗതം, വി ഓഫ് ആർമർ അൾട്രാ സെക്യൂരിറ്റി സിസ്റ്റം സജീവമായി.");
+        appInitialized = true;
+        
+        if ('wakeLock' in navigator) {
+            try { await navigator.wakeLock.request('screen'); } catch (err) {}
         }
-
+    }
+        }
         function speak(t) {
             window.speechSynthesis.cancel();
             let s = new SpeechSynthesisUtterance(t);
@@ -99,18 +102,31 @@
         }
 
         function activateAntiTheft() {
-            antiActive = true;
-            document.getElementById('antiBtn').style.background = "#ff3333";
-            speak("ആന്റി ടച്ച് മോഡ് ഓൺ ആയി. ഫോൺ അനങ്ങിയാൽ സിസ്റ്റം അലറും.");
-            
-            window.addEventListener('deviceorientation', function(e) {
-                if(antiActive && (Math.abs(e.gamma) > 15 || Math.abs(e.beta) > 15)) {
-                    new Audio('https://actions.google.com/sounds/v1/alarms/emergency_it_is_an_emergency.ogg').play();
-                    speak("അലേർട്ട്! അനുവാദമില്ലാതെ ഫോൺ തൊട്ടു.");
-                    antiActive = false;
-                    document.getElementById('antiBtn').style.background = "";
-                }
-            });
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') { startMotionDetection(); }
+            })
+            .catch(console.error);
+    } else {
+        startMotionDetection();
+    }
+}
+
+function startMotionDetection() {
+    antiActive = true;
+    document.getElementById('antiBtn').style.background = "#ff3333";
+    speak("ആന്റി ടച്ച് മോഡ് ഓൺ ആയി. ഫോൺ അനങ്ങിയാൽ സിസ്റ്റം അലറും.");
+    
+    window.addEventListener('deviceorientation', function handleMotion(e) {
+        if(antiActive && (Math.abs(e.gamma) > 15 || Math.abs(e.beta) > 15)) {
+            new Audio('https://actions.google.com/sounds/v1/alarms/emergency_it_is_an_emergency.ogg').play();
+            speak("അലേർട്ട്! അനുവാദമില്ലാതെ ഫോൺ തൊട്ടു.");
+            antiActive = false; 
+            document.getElementById('antiBtn').style.background = "";
+            window.removeEventListener('deviceorientation', handleMotion);
+        }
+    });
         }
 
         function scanLink() {
