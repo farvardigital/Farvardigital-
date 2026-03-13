@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <title>വിശുദ്ധ ഖുർആൻ - Audio & Translation</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --card-bg: #e9f5ff;
+            --border-color: #ddd;
+            --accent-color: #27ae60;
+        }
+
+        .dark-mode {
+            --bg-color: #1a1a1a;
+            --container-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --card-bg: #3d3d3d;
+            --border-color: #444;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif; 
+            transition: 0.3s;
+            margin: 0; padding: 20px;
+        }
+
+        .container { 
+            max-width: 900px; margin: auto; 
+            background: var(--container-bg); 
+            padding: 20px; border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .mode-toggle {
+            padding: 10px 20px; cursor: pointer; border: none;
+            border-radius: 5px; background: var(--accent-color);
+            color: white; font-weight: bold; margin-bottom: 20px;
+        }
+
+        .sura-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 12px; margin-top: 20px; 
+        }
+
+        .sura-card { 
+            padding: 15px; border: 1px solid var(--border-color); 
+            cursor: pointer; border-radius: 8px; 
+            background: var(--card-bg); text-align: center;
+        }
+
+        .quran-content { margin-top: 30px; text-align: right; padding: 20px; border-top: 2px solid var(--border-color); }
+        
+        .ayah-box { 
+            margin-bottom: 25px; padding: 15px; 
+            border-bottom: 1px solid var(--border-color); 
+            background: rgba(0,0,0,0.02); border-radius: 10px;
+        }
+
+        .arabic { font-size: 30px; line-height: 1.8; margin-bottom: 10px; font-family: 'Amiri', serif; }
+        .translation { font-size: 18px; text-align: left; color: var(--text-color); opacity: 0.8; margin-bottom: 10px; }
+        
+        .play-btn {
+            background: var(--accent-color); color: white; border: none;
+            padding: 5px 15px; border-radius: 20px; cursor: pointer; float: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="mode-toggle" onclick="toggleDarkMode()">Dark/Light Mode</button>
+    <h1 style="text-align: center;">വിശുദ്ധ ഖുർആൻ</h1>
+    
+    <div id="suraList" class="sura-list">ഡാറ്റ ലോഡ് ചെയ്യുന്നു...</div>
+
+    <div id="quranDisplay" class="quran-content" style="display:none;">
+        <h2 id="suraName" style="text-align:center; color: var(--accent-color);"></h2>
+        <div id="ayahsContainer"></div>
+    </div>
+</div>
+
+<script>
+    function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+
+    // എല്ലാ സൂറത്തുകളും ലിസ്റ്റ് ചെയ്യുന്നു
+    fetch('https://api.alquran.cloud/v1/surah')
+        .then(res => res.json())
+        .then(data => {
+            const listDiv = document.getElementById('suraList');
+            listDiv.innerHTML = '';
+            data.data.forEach(sura => {
+                const card = document.createElement('div');
+                card.className = 'sura-card';
+                card.innerHTML = `<strong>${sura.number}</strong><br>${sura.englishName}`;
+                card.onclick = () => loadSura(sura.number);
+                listDiv.appendChild(card);
+            });
+        });
+
+    // സൂറത്ത്, അർത്ഥം, ഓഡിയോ എന്നിവ ലോഡ് ചെയ്യുന്നു
+    function loadSura(num) {
+        const display = document.getElementById('quranDisplay');
+        const container = document.getElementById('ayahsContainer');
+        display.style.display = 'block';
+        container.innerHTML = '<p style="text-align:center;">ലോഡ് ചെയ്യുന്നു...</p>';
+
+        // അറബി, മലയാളം, ഓഡിയോ (Afsy അഫാസി വോയിസ്) എന്നിവ ഒരേസമയം എടുക്കുന്നു
+        Promise.all([
+            fetch(`https://api.alquran.cloud/v1/surah/${num}`),
+            fetch(`https://api.alquran.cloud/v1/surah/${num}/ml.abdulhameed`),
+            fetch(`https://api.alquran.cloud/v1/surah/${num}/ar.alafasy`)
+        ])
+        .then(responses => Promise.all(responses.map(r => r.json())))
+        .then(data => {
+            const arabic = data[0].data;
+            const malayalam = data[1].data;
+            const audio = data[2].data;
+
+            document.getElementById('suraName').innerText = `${arabic.englishName} (${arabic.name})`;
+            container.innerHTML = '';
+
+            arabic.ayahs.forEach((ayah, i) => {
+                const box = document.createElement('div');
+                box.className = 'ayah-box';
+                box.innerHTML = `
+                    <div class="arabic">${ayah.text}</div>
+                    <div class="translation">${malayalam.ayahs[i].text}</div>
+                    <button class="play-btn" onclick="playAudio('${audio.ayahs[i].audio}')">▶ Play Audio</button>
+                    <div style="clear:both;"></div>
+                `;
+                container.appendChild(box);
+            });
+            window.scrollTo(0, display.offsetTop);
+        });
+    }
+
+    function playAudio(url) {
+        const audio = new Audio(url);
+        audio.play();
+    }
+</script>
+
+</body>
+</html>
