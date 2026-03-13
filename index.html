@@ -171,7 +171,30 @@
     </div>
     <p style="color: #666; font-size: 13px; margin-top: 10px;">മലയാളം, ഇംഗ്ലീഷ്, അറബിക്, ഹിന്ദി <br>അക്ഷരങ്ങൾ ഉച്ചാരണത്തോടെ പഠിക്കാം!</p>
 </div>
+<div id="aadharContainer" style="text-align: center; margin: 30px auto; font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 15px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: #fff;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+        <span style="font-weight: bold; color: #333;">Aadhar PVC Maker</span>
+        <label class="switch">
+            <input type="checkbox" id="aadharSwitch" onclick="startAadharMagic()">
+            <span class="slider round anim-rose"></span>
+        </label>
+    </div>
+    <p id="aadharStatus" style="color: #666; font-size: 13px; margin-top: 10px;">ആധാർ കാർഡ് അപ്‌ലോഡ് ചെയ്ത് <br>PVC സൈസിൽ പ്രിന്റ് എടുക്കാം!</p>
+</div>
+#aadharSwitch:checked + .slider.anim-rose {
+    background-color: #f472b6; /* റോസ് നിറം */
+    box-shadow: 0 0 15px #f472b6;
+}
 
+.aadhar-glow-effect {
+    animation: aadhar-flash-bg 0.5s infinite;
+}
+
+@keyframes aadhar-flash-bg {
+    0% { background-color: #ffffff; }
+    50% { background-color: #ffe4e6; }
+    100% { background-color: #ffffff; }
+}  
 <style>
     /* സ്വിച്ച് ബട്ടണിന്റെ ഡിസൈൻ (നേരത്തെ ഉണ്ടെങ്കിൽ വീണ്ടും ചേർക്കേണ്ടതില്ല) */
     .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
@@ -211,5 +234,14 @@
     fetch(scriptURL);
   }
 </script>
+function startAadharMagic() {
+    const checkbox = document.getElementById('aadharSwitch');
+    if (checkbox.checked) {
+        document.body.classList.add('aadhar-glow-effect');
+        setTimeout(() => {
+            window.location.href = 'pvc.html';
+        }, 1200);
+    }
+}
 </body>
 </html>
