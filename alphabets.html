@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <title>അക്ഷരമാല പഠിക്കാം</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .tab-container { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; background: #1a73e8; color: white; font-weight: bold; }
+        .tab-btn:hover { background: #1557b0; }
+        .alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 20px; }
+        .letter-card { padding: 15px; background: #fff; border: 2px solid #eee; border-radius: 8px; font-size: 24px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .letter-card:hover { transform: scale(1.1); border-color: #27ae60; background: #e8f5e9; }
+        h2 { color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>അക്ഷരമാലകൾ പഠിക്കാം</h1>
+    <p>അക്ഷരത്തിൽ തൊട്ടാൽ ഉച്ചാരണം കേൾക്കാം</p>
+
+    <div class="tab-container">
+        <button class="tab-btn" onclick="showLetters('malayalam')">മലയാളം</button>
+        <button class="tab-btn" onclick="showLetters('english')">English</button>
+        <button class="tab-btn" onclick="showLetters('arabic')">العربية</button>
+        <button class="tab-btn" onclick="showLetters('hindi')">हिन्दी</button>
+    </div>
+
+    <h2 id="langTitle">മലയാളം അക്ഷരമാല</h2>
+    <div id="alphabetGrid" class="alphabet-grid"></div>
+</div>
+
+<script>
+    const data = {
+        malayalam: "അ ആ ഇ ഈ ഉ ഊ ഋ എ ഏ ഐ ഒ ഓ ഔ അം അഃ ക ഖ ഗ ഘ ങ ച ഛ ജ 展示 ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ യ ര ല വ ശ ഷ സ ഹ ള ഴ റ".split(' '),
+        english: "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(' '),
+        arabic: "ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي".split(' '),
+        hindi: "अ आ इ ई उ ऊ ऋ ए ऐ ओ औ क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह".split(' ')
+    };
+
+    function showLetters(lang) {
+        const grid = document.getElementById('alphabetGrid');
+        const title = document.getElementById('langTitle');
+        grid.innerHTML = '';
+        
+        const titles = { malayalam: 'മലയാളം അക്ഷരമാല', english: 'English Alphabets', arabic: 'അറബി അക്ഷരമാല', hindi: 'हिन्दी वर्णमाला' };
+        title.innerText = titles[lang];
+
+        data[lang].forEach(letter => {
+            const card = document.createElement('div');
+            card.className = 'letter-card';
+            card.innerText = letter;
+            card.onclick = () => speak(letter, lang);
+            grid.appendChild(card);
+        });
+    }
+
+    function speak(text, lang) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        
+        // ഭാഷ സെറ്റ് ചെയ്യുന്നു
+        if(lang === 'malayalam') msg.lang = 'ml-IN';
+        else if(lang === 'english') msg.lang = 'en-US';
+        else if(lang === 'arabic') msg.lang = 'ar-SA';
+        else if(lang === 'hindi') msg.lang = 'hi-IN';
+        
+        window.speechSynthesis.speak(msg);
+    }
+
+    // ആദ്യം മലയാളം കാണിക്കുന്നു
+    showLetters('malayalam');
+</script>
+
+</body>
+</html>
