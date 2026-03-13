@@ -233,8 +233,7 @@
   window.onload = function() {
     fetch(scriptURL);
   }
-</script>
-    function startAadharMagic() {
+  function startAadharMagic() {
     var aadharBtn = document.getElementById("aadharSwitch");
     
     if (aadharBtn.checked) {
@@ -243,11 +242,12 @@
         
         // 1 സെക്കന്റിന് ശേഷം pvc.html-ലേക്ക് പോകുന്നു
         setTimeout(function() {
-            window.location.href='pvc.html';
+            window.location.href = "pvc.html";
         }, 1000);
     } else {
         document.body.classList.remove('aadhar-glow-effect');
     }
-}
+}  
+</script>   
 </body>
 </html>
