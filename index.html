@@ -181,20 +181,6 @@
     </div>
     <p id="aadharStatus" style="color: #666; font-size: 13px; margin-top: 10px;">ആധാർ കാർഡ് അപ്‌ലോഡ് ചെയ്ത് <br>PVC സൈസിൽ പ്രിന്റ് എടുക്കാം!</p>
 </div>
-#aadharSwitch:checked + .slider.anim-rose {
-    background-color: #f472b6; /* റോസ് നിറം */
-    box-shadow: 0 0 15px #f472b6;
-}
-
-.aadhar-glow-effect {
-    animation: aadhar-flash-bg 0.5s infinite;
-}
-
-@keyframes aadhar-flash-bg {
-    0% { background-color: #ffffff; }
-    50% { background-color: #ffe4e6; }
-    100% { background-color: #ffffff; }
-}  
 <style>
     /* സ്വിച്ച് ബട്ടണിന്റെ ഡിസൈൻ (നേരത്തെ ഉണ്ടെങ്കിൽ വീണ്ടും ചേർക്കേണ്ടതില്ല) */
     .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
@@ -228,20 +214,40 @@
     input:checked + .slider { background-color: #27ae60; }
     input:checked + .slider:before { transform: translateX(24px); }
 </style>
+  <style>
+  /* സ്വിച്ച് ഓൺ ആകുമ്പോൾ റോസ് നിറം വരാൻ */
+#aadharSwitch:checked + .slider {
+    background-color: #f472b6 !important;
+}
+/* പേജ് മിന്നുന്ന അനിമേഷൻ */
+.aadhar-glow-effect {
+    animation: aadhar-flash 0.5s infinite;
+}
+@keyframes aadhar-flash {
+    0% { background-color: #ffffff; }
+    50% { background-color: #ffe4e6; }
+    100% { background-color: #ffffff; }
+}
 <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbxdRcim8JzVho5agTmaa4_gPTHMxdYXz1gCCs0RgNyK5vYqSvyC1T1rcCXJWMMK3Do/exec';
   window.onload = function() {
     fetch(scriptURL);
   }
 </script>
-function startAadharMagic() {
-    const checkbox = document.getElementById('aadharSwitch');
-    if (checkbox.checked) {
+  function startAadharMagic() {
+    var aadharBtn = document.getElementById("aadharSwitch");
+    
+    if (aadharBtn.checked) {
+        // റോസ് കളർ അനിമേഷൻ തുടങ്ങുന്നു
         document.body.classList.add('aadhar-glow-effect');
-        setTimeout(() => {
-            window.location.href = 'pvc.html';
-        }, 1200);
+        
+        // 1 സെക്കന്റിന് ശേഷം pvc.html-ലേക്ക് പോകുന്നു
+        setTimeout(function() {
+            window.location.href = "pvc.html";
+        }, 1000);
+    } else {
+        document.body.classList.remove('aadhar-glow-effect');
     }
-}
+  }
 </body>
 </html>
