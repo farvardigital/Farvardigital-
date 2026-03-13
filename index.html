@@ -132,6 +132,28 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
     </a>
   </div>
+  <div style="text-align: center; margin: 30px auto; font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 15px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: #fff;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+        <span style="font-weight: bold; color: #333;">വിശുദ്ധ ഖുർആൻ വായന</span>
+        <label class="switch">
+            <input type="checkbox" onclick="setTimeout(()=> window.location.href='quran.html', 400)">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <p style="color: #666; font-size: 13px; margin-top: 10px;">ഇവിടെ ക്ലിക്ക് ചെയ്താൽ 114 സൂറത്തുകളും <br>അവയുടെ മലയാളം അർത്ഥവും വായിക്കാം!</p>
+</div>
+
+<style>
+    /* സ്വിച്ച് ബട്ടണിന്റെ ഡിസൈൻ */
+    .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    
+    /* ഓൺ ആക്കുമ്പോൾ വരുന്ന പച്ച നിറം (ഖുർആൻ ആയതുകൊണ്ട് പച്ച കൂടുതൽ അനുയോജ്യമാണ്) */
+    input:checked + .slider { background-color: #27ae60; }
+    input:checked + .slider:before { transform: translateX(24px); }
+</style>
 <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbxdRcim8JzVho5agTmaa4_gPTHMxdYXz1gCCs0RgNyK5vYqSvyC1T1rcCXJWMMK3Do/exec';
   window.onload = function() {
