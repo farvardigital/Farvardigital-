@@ -99,7 +99,10 @@
     </p>
     </div>
   </header>
-
+<div class="visitor-box">
+    <span style="color: #ffd700; font-size: 11px; font-weight: bold;">VISITORS: </span>
+    <span id="visitor-count" style="color: #fff; font-size: 15px; font-family: 'Courier New', monospace;">002847</span>
+</div>
   <div class="services">
     <div class="service-card" onclick="window.open('https://wa.me/918921693889')">📱 Mobile & DTH Recharge</div>
     <div class="service-card" onclick="window.open('https://wa.me/918921693889')">✨ Mobile Lamination</div>
@@ -179,17 +182,7 @@
     </div>
     <p style="color: #666; font-size: 13px; margin-top: 10px;">മലയാളം, ഇംഗ്ലീഷ്, അറബിക്, ഹിന്ദി <br>അക്ഷരങ്ങൾ ഉച്ചാരണത്തോടെ പഠിക്കാം!</p>
 </div>
-</style>
-  <style>
-  /* വരി 182-ന് താഴെ ഇത് പേസ്റ്റ് ചെയ്യുക */
-div[style*="background-color: white"], 
-div[style*="background: white"],
-div[style*="color: #333"] {
-    background-color: #000 !important; /* കറുപ്പ് ബാക്ക്ഗ്രൗണ്ട് */
-    border: 2px solid #ff007f !important; /* റോസ് ബോർഡർ */
-    box-shadow: 0 0 15px #ff007f !important; /* റോസ് തിളക്കം */
-    color: #ff007f !important; /* അക്ഷരങ്ങൾ റോസ് */
-  }
+<style>
     /* സ്വിച്ച് ബട്ടണിന്റെ ഡിസൈൻ (നേരത്തെ ഉണ്ടെങ്കിൽ വീണ്ടും ചേർക്കേണ്ടതില്ല) */
     .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -234,6 +227,33 @@ div[style*="color: #333"] {
 .switch-card:hover {
     box-shadow: 0 0 25px #ff007f !important;
 }
+  /* 1. പിക്സൽ അനിമേഷൻ ബാക്ക്ഗ്രൗണ്ട് */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(255, 0, 127, 0.08) 1px, transparent 1px);
+    background-size: 35px 35px;
+    z-index: -1;
+    animation: movePixels 25s linear infinite;
+}
+
+@keyframes movePixels {
+    from { background-position: 0 0; }
+    to { background-position: 100px 100px; }
+}
+
+/* 2. വിസിറ്റർ കൗണ്ടർ സ്റ്റൈൽ */
+.visitor-box {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #ffd700;
+    padding: 8px 15px;
+    border-radius: 30px;
+    text-align: center;
+    width: fit-content;
+    margin: 15px auto;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+  }
 </style>
   <style>
   /* പിക്സൽ ബാക്ക്ഗ്രൗണ്ട് അനിമേഷൻ */
