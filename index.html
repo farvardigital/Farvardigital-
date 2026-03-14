@@ -268,6 +268,72 @@ body::before {
   window.onload = function() {
     fetch(scriptURL);
   }
-</script>   
+</script>
+  <div class="ai-assistant-container" onclick="startAIAssistant()" style="position: fixed; bottom: 30px; right: 20px; z-index: 1000; text-align: center;">
+    <div class="ai-robot" style="width: 65px; height: 65px; background: radial-gradient(circle, #ff007f, #8e44ad); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px #ff007f; cursor: pointer; border: 2px solid #fff; transition: 0.3s;">
+        <div class="ai-eyes" style="width: 30px; display: flex; justify-content: space-between;">
+            <div class="eye" style="width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+            <div class="eye" style="width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+        </div>
+    </div>
+    <p id="assistant-status" style="color: #ff007f; font-size: 10px; margin-top: 5px; font-weight: bold; background: rgba(0,0,0,0.5); padding: 2px 5px; border-radius: 5px;">ASK FARVAR AI</p>
+</div>
+
+<script>
+async function startAIAssistant() {
+    const status = document.getElementById('assistant-status');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+        alert("നിങ്ങളുടെ ബ്രൗസർ വോയ്‌സ് സപ്പോർട്ട് ചെയ്യുന്നില്ല. Google Chrome ഉപയോഗിക്കുക.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ml-IN'; 
+    recognition.start();
+    status.innerText = "ഞാൻ കേൾക്കുന്നു...";
+
+    recognition.onresult = async function(event) {
+        const userText = event.results[0][0].transcript;
+        status.innerText = "ചിന്തിക്കുന്നു...";
+        
+        try {
+            const aiResponse = await askGemini(userText);
+            speakResponse(aiResponse);
+            status.innerText = "ASK FARVAR AI";
+        } catch (error) {
+            speakResponse("ക്ഷമിക്കണം, എനിക്ക് ഇപ്പോൾ മറുപടി നൽകാൻ കഴിയുന്നില്ല.");
+            status.innerText = "Error!";
+        }
+    };
+}
+
+async function askGemini(prompt) {
+    // ഇവിടെ നിങ്ങളുടെ API KEY പേസ്റ്റ് ചെയ്യുക
+    const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; 
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt + " (Please reply in Malayalam briefly)" }] }]
+        })
+    });
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+}
+
+function speakResponse(message) {
+    window.speechSynthesis.cancel(); // പഴയ സംസാരം നിർത്താൻ
+    const speech = new SpeechSynthesisUtterance();
+    speech.lang = 'ml-IN'; 
+    speech.text = message;
+    speech.rate = 1.0;
+    window.speechSynthesis.speak(speech);
+}
+</script>  
 </body>
 </html>
