@@ -211,21 +211,21 @@
     /* ഓൺ ആക്കുമ്പോൾ വരുന്ന പച്ച നിറം (ഖുർആൻ ആയതുകൊണ്ട് പച്ച കൂടുതൽ അനുയോജ്യമാണ്) */
     input:checked + .slider { background-color: #27ae60; }
     input:checked + .slider:before { transform: translateX(24px); }
+  /* സ്വിച്ച് പെട്ടികൾ (Cards) റോസ് നിയോൺ ആക്കാൻ */
+.switch-card {
+    background-color: transparent !important; /* വെള്ള നിറം കളഞ്ഞു */
+    border: 2px solid #ff007f !important;   /* റോസ് ബോർഡർ */
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.4) !important; /* തിളക്കം */
+    color: #ff007f !important;             /* അക്ഷരങ്ങളുടെ നിറം റോസ് */
+    transition: 0.3s;
+}
+
+/* ഹോവർ ചെയ്യുമ്പോൾ കൂടുതൽ തിളങ്ങാൻ */
+.switch-card:hover {
+    box-shadow: 0 0 25px #ff007f !important;
+}
 </style>
-  <style>
-  /* സ്വിച്ച് ഓൺ ആകുമ്പോൾ റോസ് നിറം വരാൻ */
-#aadharSwitch:checked + .slider {
-    background-color: #f472b6 !important;
-}
-/* പേജ് മിന്നുന്ന അനിമേഷൻ */
-.aadhar-glow-effect {
-    animation: aadhar-flash 0.5s infinite;
-}
-@keyframes aadhar-flash {
-    0% { background-color: #ffffff; }
-    50% { background-color: #ffe4e6; }
-    100% { background-color: #ffffff; }
-}
+  
 <script>
   const scriptURL = 'https://script.google.com/macros/s/AKfycbxdRcim8JzVho5agTmaa4_gPTHMxdYXz1gCCs0RgNyK5vYqSvyC1T1rcCXJWMMK3Do/exec';
   window.onload = function() {
